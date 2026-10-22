@@ -1,0 +1,51 @@
+// Use a relative path so Vite's proxy intercepts it automatically
+const API_URL = '/api';
+
+// Helper function for API requests
+const request = async (endpoint, options = {}) => {
+  const token = localStorage.getItem('token');
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Something went wrong');
+  }
+
+  return data;
+};
+
+// Auth services
+export const authService = {
+  register: (userData) => request('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+  }),
+  login: (userData) => request('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+  }),
+  getMe: () => request('/auth/me'),
+};
+
+// Transaction services
+export const transactionService = {
+  getTransactions: () => request('/transactions'),
+  addTransaction: (txData) => request('/transactions', {
+    method: 'POST',
+    body: JSON.stringify(txData),
+  }),
+  deleteTransaction: (id) => request(`/transactions/${id}`, {
+    method: 'DELETE',
+  }),
+};
