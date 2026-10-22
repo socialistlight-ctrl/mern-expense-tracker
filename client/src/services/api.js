@@ -1,6 +1,7 @@
 // Use VITE_API_URL in production/deployed environments, fallback to '/api' for local Vite proxy
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+//const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+const API_URL = 'https://expense-tracker-backend-040n.onrender.com/api';
 // Helper function for API requests
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
