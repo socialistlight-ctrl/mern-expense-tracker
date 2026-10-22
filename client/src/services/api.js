@@ -1,5 +1,5 @@
-// Use a relative path so Vite's proxy intercepts it automatically
-const API_URL = '/api';
+// Use VITE_API_URL in production/deployed environments, fallback to '/api' for local Vite proxy
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Helper function for API requests
 const request = async (endpoint, options = {}) => {
@@ -24,7 +24,6 @@ const request = async (endpoint, options = {}) => {
 
   return data;
 };
-
 // Auth services
 export const authService = {
   register: (userData) => request('/auth/register', {
